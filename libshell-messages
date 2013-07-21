@@ -1,16 +1,29 @@
-#!/bin/sh -f
+#!/bin/sh -efu
 
-FAIL_WITH="${FAIL_WITH:-1}"
-
+# fail()
+#
+#   Produces a message and aborts program
+#
+#   Use `FAILWITH=X fail foobar` if you need to separate exitcodes
+#
 fail() {
+  local __FAILWITH="${FAILWITH:-1}"
+
   echo "ERROR: $*" >&2
-  exit "${FAIL_WITH}"
+  exit "${__FAILWITH}"
 }
 
+# warning()
+#
+#   Produces warning message
+#
 warning() {
   echo "WARNING: $*" >&2
 }
 
+# verbose()
+#
+#   Produces a message if $VERBOSE is set
 verbose() {
-  [ -n "${VERBOSE}" ] && echo "$*"
+  [ -n "${VERBOSE}" ] && echo "$*" >&2 ||:
 }
