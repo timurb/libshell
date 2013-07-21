@@ -1,0 +1,47 @@
+#!/bin/sh -fu
+
+. $(dirname $0)/../libshell-messages
+
+#
+# This is a helper function to test fail() as you can't test that with the help of shunit2
+#
+assert() {
+  if [ "$2" != "$3" ]; then
+    echo "ASSERT:$1 expected: <$2> but was <$3>"
+    return ${4:-1}
+  fi
+}
+
+testVerbose() {
+  assertEquals "Verbose is on:" "foobar" "$(VERBOSE=1 verbose foobar 2>&1 )" 
+  assertNull "Verbose is off:" "$(unset VERBOSE verbose foobar 2>&1 )"
+  assertNull "Verbose does not go to stdout:" "$(VERBOSE=1 verbose foobar 2> /dev/null )"
+}
+
+testWarning() {
+  assertEquals "WARNING: foobar" "$(warning foobar 2>&1)"
+  assertNull "Warning does not go to stdout" "$(warning foobar 2>/dev/null )"
+}
+
+### You can't test fail() with the help of shunit2 so testing that manually
+echo "testFail"
+
+unset EXITCODE
+( fail foobar 2> /dev/null ) && EXITCODE="$?" || EXITCODE="$?" ||:
+EXITCODE=${EXITCODE:-$?}
+assert "Exit code" 1 "${EXITCODE}"
+
+unset EXITCODE
+( FAILWITH=2 fail foobar 2> /dev/null ) && EXITCODE="$?" || EXITCODE="$?" ||:
+EXITCODE=${EXITCODE:-$?}
+assert "Exit code" 2 "${EXITCODE}"
+
+MESSAGE="$( (fail foobar 2>&1) ||: )" 
+assert "Message" "ERROR: foobar" "${MESSAGE}" ||:
+
+MESSAGE="$( (fail foobar 2>/dev/null) ||: )"
+assert "Stdout output" "" "${MESSAGE}" ||:
+### ...until here
+
+
+. shunit2
