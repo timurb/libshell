@@ -5,7 +5,7 @@ if ! which shunit2 > /dev/null; then
   exit 2
 fi
 
-. $(dirname $0)/../libshell-asserts
+. $(dirname $0)/../libshell-assertions
 . $(dirname $0)/../libshell-messages
 
 testVerbose() {
