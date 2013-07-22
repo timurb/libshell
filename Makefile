@@ -3,11 +3,13 @@ BINDIR    ?= $(PREFIX)/bin
 
 LIBS := $(wildcard libshell-*)
 
-.PHONY : all install uninstall test
+.PHONY : all install install-only uninstall test check
 
 all: test
 
-install: test
+install: test install-only
+
+install-only: 
 	mkdir -p $(BINDIR)
 	for LIB in $(LIBS); do \
 	  install $$LIB $(BINDIR)/; \
