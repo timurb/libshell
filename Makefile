@@ -1,7 +1,7 @@
 PREFIX    ?= /usr/local
 BINDIR    ?= $(PREFIX)/bin
 
-LIBS := $(wildcard libshell-*)
+LIBS ?= $(wildcard libshell-*)
 
 .PHONY : all install install-only uninstall test check
 
@@ -22,8 +22,8 @@ uninstall:
 
 test:
 	for TEST in test/*.test; do \
-	  $$TEST; \
 	  printf "\n"; \
+	  $$TEST; \
 	done
 
 
