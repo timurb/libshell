@@ -1,5 +1,10 @@
 #!/bin/sh -fu
 
+if ! which shunit2 > /dev/null; then
+  echo "shunit2 not found in PATH. Aborting tests"
+  exit 2
+fi
+
 . $(dirname $0)/../libshell-asserts
 . $(dirname $0)/../libshell-messages
 
