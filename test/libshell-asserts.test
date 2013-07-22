@@ -6,10 +6,28 @@ testAssert() {
   assertEquals "" "$(assert message bar bar 2>&1)"
   assertEquals "ASSERT:message expected: <foo> but was <bar>" "$(assert message foo bar 2>&1)"
   assertEquals "ASSERT:message expected: <foo> but was <bar>" "$(assert message foo bar 1 2>&1)"
-  ( assert message foo bar 1 2> /dev/null >/dev/null )
-  assertFalse $? 
+
+  # test exit codes
+  ( assert message foo foo 2> /dev/null >/dev/null )
+  assertTrue $? 
   ( assert message foo bar 2> /dev/null >/dev/null )
   assertTrue $? 
+  ( assert message foo bar 1 2> /dev/null >/dev/null )
+  assertFalse $? 
+}
+
+testAssertNot() {
+  assertEquals "" "$(assert_not message foo bar 2>&1)"
+  assertEquals "ASSERT:message expected not to be <bar>" "$(assert_not message bar bar 2>&1)"
+  assertEquals "ASSERT:message expected not to be <bar>" "$(assert_not message bar bar 1 2>&1)"
+
+  # test exit codes
+  ( assert_not message foo bar 2> /dev/null >/dev/null )
+  assertTrue $? 
+  ( assert_not message foo foo 2> /dev/null >/dev/null )
+  assertTrue $? 
+  ( assert_not message foo foo 1 2> /dev/null >/dev/null )
+  assertFalse $? 
 }
 
 . shunit2
