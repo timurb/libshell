@@ -1,0 +1,16 @@
+#!/bin/sh -fu
+
+. $(dirname $0)/../libshell-asserts
+
+testAssert() {
+  assertEquals "" "$(assert message bar bar 2>&1)"
+  assertEquals "ASSERT:message expected: <foo> but was <bar>" "$(assert message foo bar 2>&1)"
+  assertEquals "ASSERT:message expected: <foo> but was <bar>" "$(assert message foo bar 1 2>&1)"
+  ( assert message foo bar 1 2> /dev/null >/dev/null )
+  assertFalse $? 
+  ( assert message foo bar 2> /dev/null >/dev/null )
+  assertTrue $? 
+}
+
+. shunit2
+

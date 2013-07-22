@@ -1,0 +1,13 @@
+#!/bin/sh -efu
+
+assert() {
+  if [ $# -lt 3 ]; then
+    echo "assert() accepts 3 or 4 parameters. The only provided were $*" >&2
+    exit 1
+  fi
+
+  if [ "$2" != "$3" ]; then
+    echo "ASSERT:$1 expected: <$2> but was <$3>" >&2
+    [ -n "${4:-}" ] && exit $4 ||:
+  fi
+}
