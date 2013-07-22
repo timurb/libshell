@@ -28,10 +28,15 @@ test:
 
 
 check:
+	ERROR=0
 	for LIB in $(LIBS); do \
 	  LOCAL="$$(md5sum $$LIB | sed 's, .*$$,,')"; \
 	  INSTALLED="$$(md5sum $(BINDIR)/$$LIB 2> /dev/null | sed 's, .*$$,,')"; \
-	  [ "$$LOCAL" = "$$INSTALLED" ] && \
-	    echo "$$LIB is ok" || \
+	  if [ "$$LOCAL" = "$$INSTALLED" ]; then \
+	    echo "$$LIB is ok"; \
+	  else \
+	    ERROR=1; \
 	    echo "$$LIB is not ok"; \
-	done
+	  fi; \
+	done; \
+	exit $$ERROR
