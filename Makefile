@@ -12,7 +12,7 @@ install: test install-only
 install-only: 
 	mkdir -p $(BINDIR)
 	for LIB in $(LIBS); do \
-	  install $$LIB $(BINDIR)/; \
+	  install -p -m0644 $$LIB $(BINDIR)/; \
 	done
 
 uninstall:
