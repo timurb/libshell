@@ -25,5 +25,13 @@ warning() {
 #
 #   Produces a message if $VERBOSE is set
 verbose() {
-  [ -n "${VERBOSE}" ] && echo "$*" >&2 ||:
+  [ -n "${VERBOSE}" ] && echo "VERBOSE: $*" >&2 ||:
+}
+
+# message()
+#
+#   Produce a message
+message() {
+  local PROG="${PROG:-$(basename $0)}"
+  echo "$PROG: $*"
 }

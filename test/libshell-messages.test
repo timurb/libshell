@@ -4,14 +4,19 @@
 . $(dirname $0)/../libshell-messages
 
 testVerbose() {
-  assertEquals "Verbose is on:" "foobar" "$(VERBOSE=1 verbose foobar 2>&1 )" 
+  assertEquals "Verbose is on:" "VERBOSE: foobar" "$(VERBOSE=1 verbose foobar 2>&1 )" 
   assertNull "Verbose is off:" "$(unset VERBOSE verbose foobar 2>&1 )"
   assertNull "Verbose does not go to stdout:" "$(VERBOSE=1 verbose foobar 2> /dev/null )"
 }
 
 testWarning() {
-  assertEquals "WARNING: foobar" "$(warning foobar 2>&1)"
+  assertEquals "Warning message" "WARNING: foobar" "$(warning foobar 2>&1)"
   assertNull "Warning does not go to stdout" "$(warning foobar 2>/dev/null )"
+}
+
+testMessage() {
+  assertEquals "Message" "libshell-messages.test: foobar" "$(message foobar)"
+  assertEquals "Message" "foo: bar" "$(PROG=foo message bar)"
 }
 
 ### You can't test fail() with the help of shunit2 so testing that manually
