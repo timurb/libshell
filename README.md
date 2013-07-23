@@ -10,10 +10,11 @@ Installation
 ------------
 
 ```bash
-sudo make uninstall
+sudo make install
 ```
 
-This installs libshell to `/usr/local/bin`.
+This runs tests and installs libshell to `/usr/local/bin`.
+If you don't have `shunit2` installed run `sudo make install-only` instead.
 
 Uninstallation
 --------------
