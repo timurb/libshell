@@ -14,11 +14,11 @@ testAssert() {
 
   # test exit codes
   ( assert message foo foo 2> /dev/null >/dev/null )
-  assertTrue $? 
+  assertTrue "null exit code" $? 
   ( assert message foo bar 2> /dev/null >/dev/null )
-  assertTrue $? 
+  assertTrue "null exit code" $? 
   ( assert message foo bar 1 2> /dev/null >/dev/null )
-  assertFalse $? 
+  assertFalse "non-null exit code" $? 
 }
 
 testAssertNot() {
@@ -28,11 +28,11 @@ testAssertNot() {
 
   # test exit codes
   ( assert_not message foo bar 2> /dev/null >/dev/null )
-  assertTrue $? 
+  assertTrue "null exit code" $? 
   ( assert_not message foo foo 2> /dev/null >/dev/null )
-  assertTrue $? 
+  assertTrue "null exit code" $? 
   ( assert_not message foo foo 1 2> /dev/null >/dev/null )
-  assertFalse $? 
+  assertFalse "non-null exit code" $? 
 }
 
 . shunit2
