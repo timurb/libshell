@@ -9,8 +9,8 @@ fi
 
 testAssert() {
   assertEquals "" "$(assert message bar bar 2>&1)"
-  assertEquals "ASSERT:message expected: <foo> but was <bar>" "$(assert message foo bar 2>&1)"
-  assertEquals "ASSERT:message expected: <foo> but was <bar>" "$(assert message foo bar 1 2>&1)"
+  assertEquals "ASSERTION FAILED: message expected: <foo> but was <bar>" "$(assert message foo bar 2>&1)"
+  assertEquals "ASSERTION FAILED: message expected: <foo> but was <bar>" "$(assert message foo bar 1 2>&1)"
 
   # test exit codes
   ( assert message foo foo 2> /dev/null >/dev/null )
@@ -23,8 +23,8 @@ testAssert() {
 
 testAssertNot() {
   assertEquals "" "$(assert_not message foo bar 2>&1)"
-  assertEquals "ASSERT:message expected not to be <bar>" "$(assert_not message bar bar 2>&1)"
-  assertEquals "ASSERT:message expected not to be <bar>" "$(assert_not message bar bar 1 2>&1)"
+  assertEquals "ASSERTION FAILED: message expected not to be <bar>" "$(assert_not message bar bar 2>&1)"
+  assertEquals "ASSERTION FAILED: message expected not to be <bar>" "$(assert_not message bar bar 1 2>&1)"
 
   # test exit codes
   ( assert_not message foo bar 2> /dev/null >/dev/null )

@@ -20,7 +20,7 @@ testWarning() {
 }
 
 testMessage() {
-  assertEquals "Message" "libshell-messages.test: foobar" "$(message foobar)"
+  assertEquals "Message" "messages.test: foobar" "$(message foobar)"
   assertEquals "Message" "foo: bar" "$(PROG=foo message bar)"
 }
 
