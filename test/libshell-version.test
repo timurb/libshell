@@ -1,0 +1,29 @@
+#!/bin/sh -fu
+
+if ! which shunit2 > /dev/null; then
+  echo "shunit2 not found in PATH. Aborting tests"
+  exit 2
+fi
+
+. $(dirname $0)/../libshell-assertions
+. $(dirname $0)/../libshell-version
+
+testRequireLibshellVersion() {
+  
+  __LIBSHELL_VERSION="1.0.0"
+  OUTPUT="$( ( require_libshell_version "0.9.9" 2>&1 ) )"
+  assertTrue "null exit code" $?
+  assertNull "no output" "${OUTPUT}"
+
+  __LIBSHELL_VERSION="1.0.0"
+  OUTPUT="$( ( require_libshell_version "1.0.1" 2>&1 ) )"
+  assertTrue "null exit code" $?
+  assertNotNull "no output" "${OUTPUT}"
+
+  __LIBSHELL_VERSION="1.0.0"
+  OUTPUT="$( ( require_libshell_version "1.0.1" 1 2>&1 ) )"
+  assertFalse "non-null exit code" $?
+  assertNotNull "no output" "${OUTPUT}"
+}
+
+. shunit2

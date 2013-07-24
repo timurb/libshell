@@ -35,5 +35,22 @@ testAssertNot() {
   assertFalse "non-null exit code" $? 
 }
 
+testAssertVersion() {
+  assertEquals "" "$(assert_version version 0.9.9 1.0.0 2>&1)"
+  assertEquals "" "$(assert_version version 1.0.0 1.0.0 2>&1)"
+  assertEquals "ASSERTION FAILED: version version expected to be at least <1.0.1> but was <1.0.0>" "$(assert_version version 1.0.1 1.0.0 2>&1)"
+  assertEquals "ASSERTION FAILED: version version expected to be at least <1.0.1> but was <1.0.0>" "$(assert_version version 1.0.1 1.0.0 1 2>&1)"
+
+  # test exit codes
+  ( assert_version version 0.9.9 1.0.0 2> /dev/null >/dev/null )
+  assertTrue "null exit code" $? 
+  ( assert_version version 1.0.0 1.0.0 2> /dev/null >/dev/null )
+  assertTrue "null exit code" $? 
+  ( assert_version version 1.0.1 1.0.0 2> /dev/null >/dev/null )
+  assertTrue "null exit code" $? 
+  ( assert_version version 1.0.1 1.0.0 1 2> /dev/null >/dev/null )
+  assertFalse "non-null exit code" $? 
+}
+
 . shunit2
 

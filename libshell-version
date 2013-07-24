@@ -1,0 +1,16 @@
+#!/bin/sh -efu
+
+__LIBSHELL_VERSION="0.0.1"
+
+if ! command -v assert_version > /dev/null; then ### workaround for tests
+  . libshell-assertions
+fi
+
+require_libshell_version() {
+  if [ $# -lt 1 ]; then
+    echo "libshell_version() accepts at least 1 parameter"
+    exit 1
+  fi
+
+  assert_version "Libshell version" $1 "${__LIBSHELL_VERSION}" ${2:-}
+}

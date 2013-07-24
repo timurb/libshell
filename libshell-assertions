@@ -25,3 +25,22 @@ assert_not() {
     [ -n "${4:-}" ] && exit $4 ||:
   fi
 }
+
+assert_version() {
+  if [ $# -lt 3 ]; then
+    echo "assert_version() accepts 3 or 4 parameters. The only provided were $*" >&2
+    exit 1
+  fi
+
+  local REQ_VERSION=$2
+  local CURRENT_VERSION=$3
+  local EXITCODE=${4:-}
+
+  ### Note: "sort -V" may not work in all OSes
+  local LT_VERSION="$(echo "${CURRENT_VERSION}\n${REQ_VERSION}" | sort -V | head -n 1)" # extract the lesser version
+
+  if [ "${LT_VERSION}" != "${REQ_VERSION}" ]; then
+    echo "${__ASSERTION_HEADER}: $1 version expected to be at least <${REQ_VERSION}> but was <${CURRENT_VERSION}>" >&2
+    [ -n "${4:-}" ] && exit "${EXITCODE}"  ||:
+  fi
+}
